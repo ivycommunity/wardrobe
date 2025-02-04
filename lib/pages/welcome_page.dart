@@ -4,6 +4,8 @@ import 'login_page.dart';
 import 'register_page.dart';
 
 class WelcomePage extends StatelessWidget {
+  const WelcomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,16 +37,16 @@ class WelcomePage extends StatelessWidget {
                 ),
               ),
               */
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               // Welcome Text
-              Positioned(
+              const Positioned(
                 top: 250, // Adjust this value for vertical position
                 left: 0,
                 right: 0,
                 child: Center(
-                  child: const Text(
+                  child: Text(
                     'Welcome',
                     style: TextStyle(
                       fontSize: 28,
@@ -56,11 +58,11 @@ class WelcomePage extends StatelessWidget {
               ),
 
               // Description Text
-              Positioned(
+              const Positioned(
                 top: 350, // Adjust this value for vertical position
                 left: 24,
                 right: 24,
-                child: const Text(
+                child: Text(
                   "Transform your device into a powerful 3D scanner with our adavnced AR technology. Capture precise mearsurements and create detailed 3D models with just your smartphone.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -74,11 +76,11 @@ class WelcomePage extends StatelessWidget {
               Container(
                 height: 150,
                 width: 150,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.black,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.checkroom,
                   color: Colors.white,
                   size: 80,
@@ -127,12 +129,12 @@ class WelcomePage extends StatelessWidget {
               ),
 
               // OR Text
-              Positioned(
+              const Positioned(
                 top: 650, // Adjust this value for vertical position
                 left: 0,
                 right: 0,
                 child: Center(
-                  child: const Text(
+                  child: Text(
                     'OR',
                     style: TextStyle(
                       fontSize: 14,
@@ -167,7 +169,7 @@ class WelcomePage extends StatelessWidget {
                   child: const Text('REGISTER'),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               )
             ],

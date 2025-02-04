@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'welcome_page.dart';
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFE4E1),
+      backgroundColor: const Color(0xFFFFE4E1),
       body: Padding(
         padding: const EdgeInsets.all(25.0),
         child: Center(
@@ -13,16 +15,16 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 200),
+              const SizedBox(height: 200),
               // Coat hanger icon
               Container(
                 height: 150,
                 width: 150,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.black,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.checkroom,
                   color: Colors.white,
                   size: 80,
@@ -30,7 +32,7 @@ class HomePage extends StatelessWidget {
               ),
               //SizedBox(height: 20),
               // Shop now button
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {
                   // Navigate to Login Page
@@ -39,14 +41,14 @@ class HomePage extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   //backgroundColor: Colors.black87,
-                  backgroundColor: Color(0XFF1A2B3C),
+                  backgroundColor: const Color(0XFF1A2B3C),
                   //padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                   minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   "SHOP NOW",
                   style: TextStyle(
                     color: Colors.white,
@@ -54,18 +56,18 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 70),
+              const SizedBox(height: 70),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircleAvatar(radius: 4, backgroundColor: Colors.grey),
-                  SizedBox(width: 5),
+                  const CircleAvatar(radius: 4, backgroundColor: Colors.grey),
+                  const SizedBox(width: 5),
                   CircleAvatar(radius: 4, backgroundColor: Colors.grey[300]),
-                  SizedBox(width: 5),
+                  const SizedBox(width: 5),
                   CircleAvatar(radius: 4, backgroundColor: Colors.grey[300]),
                 ],
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
             ],
           ),
         ),

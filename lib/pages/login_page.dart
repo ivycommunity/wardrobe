@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'register_page.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -15,9 +17,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFE4E1),
+      backgroundColor: const Color(0xFFFFE4E1),
       body: Padding(
-        padding: EdgeInsets.all(25),
+        padding: const EdgeInsets.all(25),
         //child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -32,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 */
-              child: Text(
+              child: const Text(
                 "Welcome Back",
                 style: TextStyle(
                   fontSize: 30,
@@ -40,20 +42,20 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            SizedBox(height: 40),
-            Text(
+            const SizedBox(height: 40),
+            const Text(
               "Continue your 3D scanning journey with precise measurements and detailed object analysis. Your saved scan and settings are ready for you.",
               style: TextStyle(fontSize: 16),
             ),
-            SizedBox(height: 100),
-            Text(
+            const SizedBox(height: 100),
+            const Text(
               "LOG IN",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             /*
             Text(
               "EMAIL",
@@ -72,15 +74,15 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "EMAIL",
                     style: TextStyle(fontSize: 16),
                   ),
-                  SizedBox(
+                  const SizedBox(
                       height: 5), // Adds spacing between Text and TextField
                   TextField(
                     controller: emailController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "name@email.com",
                       prefixIcon: Icon(Icons.person),
                       border: OutlineInputBorder(),
@@ -90,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             /*
             Text(
               "PASSWORD",
@@ -110,19 +112,19 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "PASSWORD",
                     style: TextStyle(fontSize: 16),
                   ),
-                  SizedBox(
+                  const SizedBox(
                       height: 5), // Adds spacing between Text and TextField
                   TextField(
                     controller: passwordController,
                     obscureText: !isPasswordVisible,
                     decoration: InputDecoration(
                       labelText: "**********",
-                      prefixIcon: Icon(Icons.lock),
-                      border: OutlineInputBorder(),
+                      prefixIcon: const Icon(Icons.lock),
+                      border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
                         icon: Icon(
                           isPasswordVisible
@@ -140,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Navigate to home screen or dashboard
@@ -148,12 +150,12 @@ class _LoginPageState extends State<LoginPage> {
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: const Color(0xFF1A2B3C),
-                padding: EdgeInsets.symmetric(vertical: 20),
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                 ),
               ),
-              child: Center(
+              child: const Center(
                 child: Text(
                   "LOG IN",
                   style: TextStyle(
@@ -183,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Don't have an account? ",
                   style: TextStyle(
                     fontSize: 14,
@@ -198,7 +200,7 @@ class _LoginPageState extends State<LoginPage> {
                       MaterialPageRoute(builder: (context) => RegisterPage()),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     "Register",
                     style: TextStyle(
                       fontSize: 14,

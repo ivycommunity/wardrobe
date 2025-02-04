@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wardobe_app/pages/login_page.dart';
-import 'package:wardobe_app/pages/register_page.dart';
-import 'package:wardobe_app/pages/welcome_page.dart';
 import 'pages/home_page.dart';
 
 void main() {

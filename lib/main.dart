@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'utils/logger.dart';
+import 'package:wardobe_app/utils/logger.dart';
 
 void checkUser() {
   logger.d("Logger inititialization");

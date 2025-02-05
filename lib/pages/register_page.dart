@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wardobe_app/pages/login_page.dart';
+import 'package:wardobe_app/utils/logger.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -198,9 +199,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 minimumSize: const Size(double.infinity, 50),
               ),
               onPressed: () {
-                print("Name: ${nameController.text}");
-                print("Email: ${emailController.text}");
-                print("Password: ${passwordController.text}");
+                logger.d("""
+                  Name: ${nameController.text}
+                  Email: ${emailController.text}
+                  Password: ${passwordController.text}
+                """);
               },
               child: const Text("REGISTER"),
             ),

@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   // Navigate to Login Page
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => WelcomePage()));
+                      MaterialPageRoute(builder: (context) => const WelcomePage()));
                 },
                 style: ElevatedButton.styleFrom(
                   //backgroundColor: Colors.black87,

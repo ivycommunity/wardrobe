@@ -26,20 +26,11 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //SizedBox(height: 100),
-            Container(
-              /*
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.pink[100],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                */
-              child: const Text(
-                "Welcome Back",
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
+            const Text(
+              "Welcome Back",
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 40),
@@ -70,26 +61,24 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             */
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "EMAIL",
-                    style: TextStyle(fontSize: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "EMAIL",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(
+                    height: 5), // Adds spacing between Text and TextField
+                TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    labelText: "name@email.com",
+                    prefixIcon: Icon(Icons.person),
+                    border: OutlineInputBorder(),
                   ),
-                  const SizedBox(
-                      height: 5), // Adds spacing between Text and TextField
-                  TextField(
-                    controller: emailController,
-                    decoration: const InputDecoration(
-                      labelText: "name@email.com",
-                      prefixIcon: Icon(Icons.person),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
 
             const SizedBox(height: 20),
@@ -108,39 +97,37 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: true,
             ),
             */
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "PASSWORD",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(
-                      height: 5), // Adds spacing between Text and TextField
-                  TextField(
-                    controller: passwordController,
-                    obscureText: !isPasswordVisible,
-                    decoration: InputDecoration(
-                      labelText: "**********",
-                      prefixIcon: const Icon(Icons.lock),
-                      border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          isPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            isPasswordVisible = !isPasswordVisible;
-                          });
-                        },
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "PASSWORD",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(
+                    height: 5), // Adds spacing between Text and TextField
+                TextField(
+                  controller: passwordController,
+                  obscureText: !isPasswordVisible,
+                  decoration: InputDecoration(
+                    labelText: "**********",
+                    prefixIcon: const Icon(Icons.lock),
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
+                      onPressed: () {
+                        setState(() {
+                          isPasswordVisible = !isPasswordVisible;
+                        });
+                      },
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -197,7 +184,7 @@ class _LoginPageState extends State<LoginPage> {
                     // Navigate to log in page
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => RegisterPage()),
+                      MaterialPageRoute(builder: (context) => const RegisterPage()),
                     );
                   },
                   child: const Text(

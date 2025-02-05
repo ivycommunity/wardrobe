@@ -29,29 +29,20 @@ class _RegisterPageState extends State<RegisterPage> {
 
             // Welcome Text
 
-            Container(
-              /*
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.pink[100],
-                  borderRadius: BorderRadius.circular(8),
+            const Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Get started....",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
-                */
-              child: const Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "Get started....",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Transform your device into a powerful 3D scanner with our advanced AR technology. Capture precise measurements and create detailed 3D models with just your smartphone.",
-                    style: TextStyle(fontSize: 16, color: Colors.black54),
-                  ),
-                ],
-              ),
+                SizedBox(height: 20),
+                Text(
+                  "Transform your device into a powerful 3D scanner with our advanced AR technology. Capture precise measurements and create detailed 3D models with just your smartphone.",
+                  style: TextStyle(fontSize: 16, color: Colors.black54),
+                ),
+              ],
             ),
             //SizedBox(height: 90),
 
@@ -65,26 +56,24 @@ class _RegisterPageState extends State<RegisterPage> {
 
             // Name Input
             //SizedBox(height: 90),
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "NAME",
-                    style: TextStyle(fontSize: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "NAME",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(
+                    height: 5), // Adds spacing between Text and TextField
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                    labelText: "Name",
+                    prefixIcon: Icon(Icons.person),
+                    border: OutlineInputBorder(),
                   ),
-                  const SizedBox(
-                      height: 5), // Adds spacing between Text and TextField
-                  TextField(
-                    controller: nameController,
-                    decoration: const InputDecoration(
-                      labelText: "Name",
-                      prefixIcon: Icon(Icons.person),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
 
             /*
@@ -118,26 +107,24 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
             */
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "EMAIL",
-                    style: TextStyle(fontSize: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "EMAIL",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(
+                    height: 5), // Adds spacing between Text and TextField
+                TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    labelText: "name@email.com",
+                    prefixIcon: Icon(Icons.person),
+                    border: OutlineInputBorder(),
                   ),
-                  const SizedBox(
-                      height: 5), // Adds spacing between Text and TextField
-                  TextField(
-                    controller: emailController,
-                    decoration: const InputDecoration(
-                      labelText: "name@email.com",
-                      prefixIcon: Icon(Icons.person),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
 
             // Password Input
@@ -168,39 +155,37 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             */
 
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "PASSWORD",
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(
-                      height: 5), // Adds spacing between Text and TextField
-                  TextField(
-                    controller: passwordController,
-                    obscureText: !isPasswordVisible,
-                    decoration: InputDecoration(
-                      labelText: "**********",
-                      prefixIcon: const Icon(Icons.lock),
-                      border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          isPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            isPasswordVisible = !isPasswordVisible;
-                          });
-                        },
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "PASSWORD",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(
+                    height: 5), // Adds spacing between Text and TextField
+                TextField(
+                  controller: passwordController,
+                  obscureText: !isPasswordVisible,
+                  decoration: InputDecoration(
+                    labelText: "**********",
+                    prefixIcon: const Icon(Icons.lock),
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
+                      onPressed: () {
+                        setState(() {
+                          isPasswordVisible = !isPasswordVisible;
+                        });
+                      },
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
 
             //SizedBox(height: 30),
@@ -251,7 +236,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     // Navigate to log in page
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
+                      MaterialPageRoute(builder: (context) => const LoginPage()),
                     );
                   },
                   child: const Text(

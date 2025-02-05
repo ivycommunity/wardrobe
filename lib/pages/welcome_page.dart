@@ -114,7 +114,7 @@ class WelcomePage extends StatelessWidget {
                   onPressed: () {
                     // Log In functionality
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
+                        MaterialPageRoute(builder: (context) => const LoginPage()));
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -156,7 +156,7 @@ class WelcomePage extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => RegisterPage()));
+                            builder: (context) => const RegisterPage()));
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,

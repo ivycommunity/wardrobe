@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "505962464441",
+    "firebase_url": "https://ivy-wardrobe-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "ivy-wardrobe",
+    "storage_bucket": "ivy-wardrobe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505962464441:android:1dc09a9d4a91af91740768",
+        "android_client_info": {
+          "package_name": "com.example.wardobe_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxkeXzmkqs9weIrihjHrIEpR-MVYaDWNs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

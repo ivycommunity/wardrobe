@@ -3,6 +3,22 @@ import 'pages/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:logger/logger.dart';
+
+var logger = Logger(
+  printer: PrettyPrinter()
+);
+
+void checkUser() {
+  logger.d("Logger inititialization");
+  FirebaseAuth auth = FirebaseAuth.instance;
+  if (auth.currentUser != null) {
+    logger.i("User is logged in ${auth.currentUser!.email}");
+  } else {
+    logger.i("No user logged in");
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +33,7 @@ void main() async {
       backgroundColor: Colors.green,
       textColor: Colors.white,
     );
+    logger.i("Firebase Connected Successfully");
   } catch (e) {
     Fluttertoast.showToast(
       msg: "Firebase Connection Failed: $e",
@@ -25,6 +42,7 @@ void main() async {
       backgroundColor: Colors.red,
       textColor: Colors.white,
     );
+    logger.e("Firebase Connection Failed: $e");
   }
   runApp(const MyApp());
 }

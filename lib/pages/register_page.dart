@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wardobe_app/pages/login_page.dart';
 import 'package:wardobe_app/utils/logger.dart';
+import 'package:wardobe_app/services/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -14,6 +16,21 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = false;
+  final AuthService _authService = AuthService();
+
+  void _register() async{
+    User? user = await _authService.register(
+      emailController.text,
+      passwordController.text,
+      );
+    
+    if (user != null) {
+      logger.i("Registration successful for ${user.email}");
+    }
+    else {
+      logger.e("Registration failed");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,6 @@ import 'package:wardobe_app/utils/logger.dart';
 import 'package:wardobe_app/services/auth_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -30,16 +29,24 @@ class _RegisterPageState extends State<RegisterPage> {
     await FirebaseAuth.instance.currentUser?.reload();
 
     if (user != null) {
-      logger.i("Registration successful for ${user.email}, ${user.displayName}");
+      logger
+          .i("Registration successful for ${user.email}, ${user.displayName}");
       Fluttertoast.showToast(
-      msg: "Registration Successful for ${user.displayName}",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.green,
-      textColor: Colors.white,
-    );
+        msg: "Registration Successful for ${user.displayName}",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+      );
     } else {
       logger.e("Registration failed for ${emailController.text}");
+      Fluttertoast.showToast(
+        msg: "Registration Failed",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
     }
   }
 

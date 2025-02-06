@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:wardobe_app/services/auth_service.dart';
+import 'package:wardobe_app/utils/logger.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'register_page.dart';
 
@@ -13,6 +17,34 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = false;
+  final AuthService _authService = AuthService();
+
+  void _login() async {
+    User? user = await _authService.signIn(
+        emailController.text, passwordController.text);
+
+    await FirebaseAuth.instance.currentUser?.reload();
+
+    if (user != null) {
+      logger.i("Successful login for : ${user.email}");
+      Fluttertoast.showToast(
+        msg: "Sing In Successful for ${user.displayName}",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+      );
+    } else {
+      logger.e("Login failed");
+      Fluttertoast.showToast(
+        msg: "Login Failed",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +164,8 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
+                _login();
+
                 // Navigate to home screen or dashboard
               },
               style: ElevatedButton.styleFrom(
@@ -184,7 +218,8 @@ class _LoginPageState extends State<LoginPage> {
                     // Navigate to log in page
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const RegisterPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const RegisterPage()),
                     );
                   },
                   child: const Text(

@@ -9,14 +9,22 @@ class AuthService {
   User? get currentUser => _auth.currentUser;
 
   // Sign up with email & password
-  Future<User?> register(String email, String password)async{
+  Future<User?> register(String name, String email, String password) async {
     try{
       UserCredential userCredential = 
       await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
         );
-        return userCredential.user;
+
+        User? user = userCredential.user;
+        if (user != null) {
+          // Setting the display name
+          await userCredential.user?.updateDisplayName(name);
+          await userCredential.user?.reload();
+          user = _auth.currentUser;
+        }
+        return user;
     } catch (e) {
       logger.e("Error occurred during registration", error: e);
       return null;

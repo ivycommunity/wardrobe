@@ -31,6 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (user != null) {
       logger
           .i("Registration successful for ${user.email}, ${user.displayName}");
+
       Fluttertoast.showToast(
         msg: "Registration Successful for ${user.displayName}",
         toastLength: Toast.LENGTH_SHORT,
@@ -38,8 +39,17 @@ class _RegisterPageState extends State<RegisterPage> {
         backgroundColor: Colors.green,
         textColor: Colors.white,
       );
+
+      // Delay navigation to the login page.
+      await Future.delayed(const Duration(seconds: 2), () {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const LoginPage()),
+          (Route<dynamic> route) => false,
+        );
+      });
     } else {
       logger.e("Registration failed for ${emailController.text}");
+
       Fluttertoast.showToast(
         msg: "Registration Failed",
         toastLength: Toast.LENGTH_LONG,

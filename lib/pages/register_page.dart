@@ -16,6 +16,9 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final nameFocus = FocusNode();
+  final emailFocus = FocusNode();
+  final passwordFocus = FocusNode();
 
   bool isPasswordVisible = false;
   bool _isLoading = false;
@@ -89,11 +92,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Create focus nodes for each field
-    final nameFocus = FocusNode();
-    final emailFocus = FocusNode();
-    final passwordFocus = FocusNode();
-
     return Scaffold(
       backgroundColor: const Color(0xFFFFE4E1),
       body: Form(
@@ -305,8 +303,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void dispose() {
+    nameFocus.dispose();
     nameController.dispose();
+    emailFocus.dispose();
     emailController.dispose();
+    passwordFocus.dispose();
     passwordController.dispose();
     super.dispose();
   }

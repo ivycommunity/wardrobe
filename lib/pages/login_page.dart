@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wardobe_app/pages/user_home.dart';
 import 'package:wardobe_app/services/auth_service.dart';
 import 'package:wardobe_app/utils/logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -62,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
         // Delay navigation to the Home page.
         await Future.delayed(const Duration(seconds: 2), () {
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const RegisterPage()),
+            MaterialPageRoute(builder: (context) => const UserHome()),
             (Route<dynamic> route) => false,
           );
         });

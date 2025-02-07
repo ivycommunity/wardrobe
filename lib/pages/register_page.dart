@@ -16,69 +16,102 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
   bool isPasswordVisible = false;
+  bool _isLoading = false;
   final AuthService _authService = AuthService();
+  final _formkey = GlobalKey<FormState>();
 
   void _register() async {
-    User? user = await _authService.register(
-      nameController.text,
-      emailController.text,
-      passwordController.text,
-    );
+    // Validate form before proceeding
+    if (!_formkey.currentState!.validate()) return;
 
-    await FirebaseAuth.instance.currentUser?.reload();
+    setState(() {
+      _isLoading = true;
+    });
 
-    if (user != null) {
-      logger
-          .i("Registration successful for ${user.email}, ${user.displayName}");
-
-      Fluttertoast.showToast(
-        msg: "Registration Successful for ${user.displayName}",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
+    try {
+      User? user = await _authService.register(
+        nameController.text,
+        emailController.text,
+        passwordController.text,
       );
 
-      // Delay navigation to the login page.
-      await Future.delayed(const Duration(seconds: 2), () {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-          (Route<dynamic> route) => false,
-        );
-      });
-    } else {
-      logger.e("Registration failed for ${emailController.text}");
+      // Reload so that user details are usable
+      await FirebaseAuth.instance.currentUser?.reload();
 
+      // Check registration success
+      if (user != null) {
+        logger.i(
+            "Registration successful for ${user.email}, ${user.displayName}");
+
+        Fluttertoast.showToast(
+          msg: "Registration Successful for ${user.displayName}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+        );
+
+        // Delay navigation to the login page.
+        await Future.delayed(const Duration(seconds: 2), () {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+            (Route<dynamic> route) => false,
+          );
+        });
+      } else {
+        logger.e("Registration failed for ${emailController.text}");
+
+        Fluttertoast.showToast(
+          msg: "Registration Failed",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+      }
+    } catch (e) {
+      logger.e("Registration Failed:", error: e);
       Fluttertoast.showToast(
-        msg: "Registration Failed",
+        msg: "Registration Failed: ${e.toString()}",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    // Create focus nodes for each field
+    final nameFocus = FocusNode();
+    final emailFocus = FocusNode();
+    final passwordFocus = FocusNode();
+
     return Scaffold(
       backgroundColor: const Color(0xFFFFE4E1),
-      body: Padding(
-        padding: const EdgeInsets.all(25),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
+      body: Form(
+        key: _formkey,
+        child: ListView(
+          padding: const EdgeInsets.all(25),
           children: [
+            // Header section
             const Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                SizedBox(height: 50),
                 Text(
                   "Get started....",
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 40),
                 Text(
                   "Transform your device into a powerful 3D scanner with our advanced AR technology. "
                   "Capture precise measurements and create detailed 3D models with just your smartphone.",
@@ -86,6 +119,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ],
             ),
+
+            const SizedBox(height: 70),
+
             const Text(
               "REGISTER",
               style: TextStyle(
@@ -93,89 +129,142 @@ class _RegisterPageState extends State<RegisterPage> {
                 fontSize: 22,
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "NAME",
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 5),
-                TextField(
-                  controller: nameController,
-                  decoration: const InputDecoration(
-                    labelText: "Name",
-                    prefixIcon: Icon(Icons.person),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ],
+
+            const SizedBox(height: 20),
+
+            // Name field with validation
+            const Text(
+              "NAME",
+              style: TextStyle(fontSize: 16),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "EMAIL",
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 5),
-                TextField(
-                  controller: emailController,
-                  decoration: const InputDecoration(
-                    labelText: "name@email.com",
-                    prefixIcon: Icon(Icons.email),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "PASSWORD",
-                  style: TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 5),
-                TextField(
-                  controller: passwordController,
-                  obscureText: !isPasswordVisible,
-                  decoration: InputDecoration(
-                    labelText: "**********",
-                    prefixIcon: const Icon(Icons.lock),
-                    border: const OutlineInputBorder(),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        isPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          isPasswordVisible = !isPasswordVisible;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: const Color(0xFF1A2B3C),
-                minimumSize: const Size(double.infinity, 50),
-              ),
-              onPressed: () {
-                _register();
-                logger.d("""
-                Name: ${nameController.text}
-                Email: ${emailController.text}
-                Password: ${passwordController.text}
-              """);
+            const SizedBox(height: 5),
+            TextFormField(
+              controller: nameController,
+              focusNode: nameFocus,
+              textInputAction: TextInputAction.next,
+              onFieldSubmitted: (_) {
+                FocusScope.of(context).requestFocus(emailFocus);
               },
-              child: const Text("REGISTER"),
+              decoration: const InputDecoration(
+                labelText: "Name",
+                prefixIcon: Icon(Icons.person),
+                border: OutlineInputBorder(),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your name';
+                }
+                if (value.length < 2) {
+                  return 'Name must be at least 2 characters';
+                }
+                return null;
+              },
             ),
+
+            const SizedBox(height: 20),
+
+            // Email field
+            const Text(
+              "EMAIL",
+              style: TextStyle(fontSize: 16),
+            ),
+
+            const SizedBox(height: 5),
+
+            TextFormField(
+              controller: emailController,
+              focusNode: emailFocus,
+              textInputAction: TextInputAction.next,
+              onFieldSubmitted: (_) {
+                FocusScope.of(context).requestFocus(passwordFocus);
+              },
+              decoration: const InputDecoration(
+                labelText: "name@email.com",
+                prefixIcon: Icon(Icons.email),
+                border: OutlineInputBorder(),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your email';
+                }
+                final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                if (!emailRegex.hasMatch(value)) {
+                  return 'Please enter a valid email';
+                }
+                return null;
+              },
+            ),
+
+            const SizedBox(height: 20),
+
+            // Password field with validation
+            const Text(
+              "PASSWORD",
+              style: TextStyle(fontSize: 16),
+            ),
+
+            const SizedBox(height: 5),
+
+            TextFormField(
+              controller: passwordController,
+              focusNode: passwordFocus,
+              textInputAction: TextInputAction.done,
+              onFieldSubmitted: (_) {
+                if (!_isLoading) {
+                  FocusScope.of(context).unfocus();
+                }
+              },
+              obscureText: !isPasswordVisible,
+              decoration: InputDecoration(
+                labelText: "**********",
+                prefixIcon: const Icon(Icons.lock),
+                border: const OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      isPasswordVisible = !isPasswordVisible;
+                    });
+                  },
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a password';
+                }
+                if (value.length < 6) {
+                  return 'Password must be at least 6 characters';
+                }
+                return null;
+              },
+            ),
+
+            const SizedBox(height: 30),
+
+            // Register button
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: const Color(0xFF1A2B3C),
+                  minimumSize: const Size(double.infinity, 50),
+                ),
+                onPressed: _isLoading ? null : _register,
+                child: _isLoading
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : const Text("Register")),
+
+            const SizedBox(height: 20),
+
+            // Login link
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -187,13 +276,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginPage()),
-                    );
-                  },
+                  onPressed: _isLoading
+                      ? null
+                      : () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage()),
+                          );
+                        },
                   child: const Text(
                     "Login",
                     style: TextStyle(
@@ -205,9 +296,18 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ],
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }

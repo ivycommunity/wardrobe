@@ -79,20 +79,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const SizedBox(height: 20),
-            /*
-            Text(
-              "EMAIL",
-              style: TextStyle(fontSize: 16),
-            ),
-            //SizedBox(height: 0.5),
-            TextField(
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.email),
-                labelText: "name@email.com",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            */
+
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -114,21 +101,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
 
             const SizedBox(height: 20),
-            /*
-            Text(
-              "PASSWORD",
-              style: TextStyle(fontSize: 16),
-            ),
-            //SizedBox(height: 10),
-            TextField(
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.lock),
-                labelText: "**********",
-                border: OutlineInputBorder(),
-              ),
-              obscureText: true,
-            ),
-            */
+
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -186,22 +159,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            //SizedBox(height: 10),
-            /*
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  // Navigate to Register Page
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => RegisterPage()));
-                },
-                child: Text(
-                  "Don't have an account? Register",
-                  style: TextStyle(color: Colors.blue),
-                ),
-              ),
-            ),
-            */
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

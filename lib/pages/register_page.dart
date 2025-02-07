@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wardobe_app/pages/email_verification.dart';
 import 'package:wardobe_app/pages/login_page.dart';
 import 'package:wardobe_app/utils/logger.dart';
 import 'package:wardobe_app/services/auth_service.dart';
@@ -66,11 +67,10 @@ class _RegisterPageState extends State<RegisterPage> {
           textColor: Colors.white,
         );
 
-        // Delay navigation to the login page.
+        // Delay navigation to the emial verifaction page.
         await Future.delayed(const Duration(seconds: 2), () {
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const LoginPage()),
-            (Route<dynamic> route) => false,
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const EmailVerificationPage()),
           );
         });
       } else {

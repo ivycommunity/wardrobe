@@ -4,6 +4,7 @@ import 'package:wardobe_app/services/auth_service.dart';
 import 'package:wardobe_app/utils/logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:wardobe_app/pages/email_verification.dart';
 
 import 'register_page.dart';
 
@@ -49,6 +50,14 @@ class _LoginPageState extends State<LoginPage> {
       );
 
       await FirebaseAuth.instance.currentUser?.reload();
+
+      if (user != null && !user.emailVerified) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+              builder: (context) => const EmailVerificationPage()),
+        );
+        return;
+      }
 
       if (user != null) {
         logger.i("Successful login for : ${user.email}");

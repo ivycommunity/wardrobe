@@ -29,6 +29,16 @@ class _RegisterPageState extends State<RegisterPage> {
     // Validate form before proceeding
     if (!_formkey.currentState!.validate()) return;
 
+    String enteredName = nameController.text.trim();
+    String enteredEmail = emailController.text.trim();
+    String enteredPassword = passwordController.text.trim();
+
+    logger.i("""
+    Name: $enteredName,
+    Email: $enteredEmail,
+    Password: $enteredPassword
+    """);
+
     setState(() {
       _isLoading = true;
     });
@@ -243,22 +253,23 @@ class _RegisterPageState extends State<RegisterPage> {
 
             // Register button
             ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: const Color(0xFF1A2B3C),
-                  minimumSize: const Size(double.infinity, 50),
-                ),
-                onPressed: _isLoading ? null : _register,
-                child: _isLoading
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : const Text("Register")),
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: const Color(0xFF1A2B3C),
+                minimumSize: const Size(double.infinity, 50),
+              ),
+              onPressed: _isLoading ? null : _register,
+              child: _isLoading
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : const Text("REGISTER"),
+            ),
 
             const SizedBox(height: 20),
 

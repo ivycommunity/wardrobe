@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wardobe_app/pages/password_reset.dart';
 import 'package:wardobe_app/pages/user_home.dart';
 import 'package:wardobe_app/services/auth_service.dart';
 import 'package:wardobe_app/utils/logger.dart';
@@ -225,7 +226,33 @@ class _LoginPageState extends State<LoginPage> {
                   },
                 ),
 
-                const SizedBox(height: 30),
+                const SizedBox(height: 10),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        // Navigate to log in page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PasswordResetPage()),
+                        );
+                      },
+                      child: const Text(
+                        "Forgot Password?",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 15),
 
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(

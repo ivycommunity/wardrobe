@@ -13,7 +13,20 @@
           "package_name": "com.example.wardobe_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "505962464441-d7usb2d9sth72skpaj64k36t5kpdh6vm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wardobe_app",
+            "certificate_hash": "377dfd8e0eb315bffa22f5192faa5f8c26adeeab"
+          }
+        },
+        {
+          "client_id": "505962464441-innh3689hfhv4i1497knsunv1r4tqm4b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAxkeXzmkqs9weIrihjHrIEpR-MVYaDWNs"
@@ -21,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505962464441-innh3689hfhv4i1497knsunv1r4tqm4b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "505962464441-9a6olv0jar88l4ucou7n66jfdl0710jg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.wardobeApp"
+              }
+            }
+          ]
         }
       }
     }

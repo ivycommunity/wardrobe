@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wardobe_app/pages/login_page.dart';
 
 class PasswordResetPage extends StatefulWidget {
-  const PasswordResetPage({Key? key}) : super(key: key);
+  const PasswordResetPage({super.key});
 
   @override
   _PasswordResetPageState createState() => _PasswordResetPageState();

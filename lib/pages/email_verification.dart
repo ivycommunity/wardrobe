@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wardobe_app/pages/login_page.dart';
@@ -53,32 +55,28 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
     }
   }
 
-  // Check if email is verified
-  Future<void> _checkEmailVerified() async {
-    // Reload the user data to get the latest email verification status
-    await FirebaseAuth.instance.currentUser?.reload();
-    User? updatedUser =
-        FirebaseAuth.instance.currentUser; // Refresh user reference
+  void _startEmailVerificationCheck() {
+    Timer.periodic(const Duration(seconds: 2), (timer) async {
+      await FirebaseAuth.instance.currentUser?.reload();
+      User? updatedUser = FirebaseAuth.instance.currentUser;
 
-    if (updatedUser?.emailVerified ?? false) {
-      if (mounted) {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-          (Route<dynamic> route) => false,
-        );
+      if (updatedUser?.emailVerified ?? false) {
+        timer.cancel(); // Stop checking once verified
+
+        if (mounted) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+            (Route<dynamic> route) => false,
+          );
+        }
       }
-    } else {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Email not verified yet. Please check your inbox.'),
-            backgroundColor: Colors.orange,
-            behavior: SnackBarBehavior.floating,
-            margin: EdgeInsets.all(16),
-          ),
-        );
-      }
-    }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startEmailVerificationCheck(); // Start auto-check on page load
   }
 
   @override
@@ -167,7 +165,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                         backgroundColor: const Color(0xFF1A2B3C),
                         minimumSize: const Size(200, 50),
                       ),
-                      onPressed: _checkEmailVerified,
+                      onPressed: _startEmailVerificationCheck,
                       child: const Text('I\'ve Verified My Email'),
                     ),
                     const SizedBox(height: 10),

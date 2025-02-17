@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:wardobe_app/pages/password_reset.dart';
 import 'package:wardobe_app/pages/user_home.dart';
 import 'package:wardobe_app/services/auth_service.dart';
@@ -28,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
 
   final AuthService _authService = AuthService();
 
-  void _login() async {
+  void _loginWithEmail() async {
     // Form validation
     if (!_formkey.currentState!.validate()) return;
 
@@ -71,7 +72,70 @@ class _LoginPageState extends State<LoginPage> {
         );
 
         // Delay navigation to the Home page.
-        await Future.delayed(const Duration(seconds: 2), () {
+        await Future.delayed(const Duration(seconds: 1), () {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const UserHome()),
+            (Route<dynamic> route) => false,
+          );
+        });
+      } else {
+        Fluttertoast.showToast(
+          msg: "Incorrect email or password. Try again...",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+
+        logger.e("Sign In failed");
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+
+      logger.e("Sign In failed:", error: e);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _loginWithGoogle() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      User? user = await _authService.signInWithGoogle();
+
+      await FirebaseAuth.instance.currentUser?.reload();
+
+      if (user != null && !user.emailVerified) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+              builder: (context) => const EmailVerificationPage()),
+        );
+        return;
+      }
+
+      if (user != null) {
+        logger.i("Successful login for : ${user.email}");
+        Fluttertoast.showToast(
+          msg: "Sign In Successful for ${user.displayName}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+        );
+
+        // Delay navigation to the Home page.
+        await Future.delayed(const Duration(seconds: 1), () {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const UserHome()),
             (Route<dynamic> route) => false,
@@ -146,6 +210,37 @@ class _LoginPageState extends State<LoginPage> {
                     fontWeight: FontWeight.bold,
                     fontSize: 22,
                   ),
+                ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Don't have an account? ",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        // Navigate to log in page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const RegisterPage()),
+                        );
+                      },
+                      child: const Text(
+                        "Register",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
 
                 const SizedBox(height: 20),
@@ -255,55 +350,40 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 15),
 
                 ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: const Color(0xFF1A2B3C),
-                      minimumSize: const Size(double.infinity, 50),
-                    ),
-                    onPressed: _isLoading ? null : _login,
-                    child: _isLoading
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            ),
-                          )
-                        : const Text("LOG IN")),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: const Color(0xFF1A2B3C),
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                  onPressed: _isLoading ? null : _loginWithEmail,
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Text("LOG IN"),
+                ),
 
                 const SizedBox(height: 20),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Don't have an account? ",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
+                    SignInButton(
+                      Buttons.Google,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
                       ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        // Navigate to log in page
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const RegisterPage()),
-                        );
-                      },
-                      child: const Text(
-                        "Register",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 8, horizontal: 70),
+                      onPressed: _loginWithGoogle,
                     ),
                   ],
-                ),
+                )
               ],
             ),
           ],

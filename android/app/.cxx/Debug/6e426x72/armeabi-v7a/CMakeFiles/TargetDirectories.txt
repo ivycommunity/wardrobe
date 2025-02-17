@@ -1,0 +1,2 @@
+C:/Users/Arnold/Work/IVY/IVY-Wardrobe/android/app/.cxx/Debug/6e426x72/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/Arnold/Work/IVY/IVY-Wardrobe/android/app/.cxx/Debug/6e426x72/armeabi-v7a/CMakeFiles/rebuild_cache.dir

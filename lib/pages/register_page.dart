@@ -6,6 +6,7 @@ import 'package:wardobe_app/utils/logger.dart';
 import 'package:wardobe_app/services/auth_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+/// RegisterPage handles user registration with email/password and Google Sign-In
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -13,19 +14,64 @@ class RegisterPage extends StatefulWidget {
   _RegisterPageState createState() => _RegisterPageState();
 }
 
+  /// Custom widget to display password requirement status
+  class PasswordRequirement extends StatelessWidget {
+    final bool isMet;
+    final String text;
+
+    const PasswordRequirement({
+      required this.isMet,
+      required this.text,
+      Key? key,
+    }) : super(key: key);
+
+    @override
+    Widget build(BuildContext context) {
+      return Row(
+        children: [
+          Icon(
+            isMet ? Icons.check_circle : Icons.cancel,
+            size: 16,
+            color: isMet ? Colors.green : Colors.red,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            text,
+            style: TextStyle(
+              color: isMet ? Colors.green : Colors.red,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      );
+    }
+  }
+
 class _RegisterPageState extends State<RegisterPage> {
+  // Controllers for form fields
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  
+  // Focus nodes for field navigation
   final nameFocus = FocusNode();
   final emailFocus = FocusNode();
   final passwordFocus = FocusNode();
 
+  // UI state variables
   bool isPasswordVisible = false;
   bool _isLoading = false;
+  
+  // Password validation states
+  bool hasMinLength = false;
+  bool hasUppercase = false;
+  bool hasSpecialChar = false;
+
+  // Services
   final AuthService _authService = AuthService();
   final _formkey = GlobalKey<FormState>();
 
+  /// Handles the registration process
   void _register() async {
     // Validate form before proceeding
     if (!_formkey.currentState!.validate()) return;
@@ -56,8 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
       // Check registration success
       if (user != null) {
-        logger.i(
-            "Registration successful for ${user.email}, ${user.displayName}");
+        logger.i("Registration successful for ${user.email}, ${user.displayName}");
 
         Fluttertoast.showToast(
           msg: "Registration Successful for ${user.displayName}",
@@ -67,7 +112,7 @@ class _RegisterPageState extends State<RegisterPage> {
           textColor: Colors.white,
         );
 
-        // Delay navigation to the emial verifaction page.
+        // Delay navigation to the email verification page
         await Future.delayed(const Duration(seconds: 2), () {
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => const EmailVerificationPage()),
@@ -171,14 +216,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
             const SizedBox(height: 20),
 
-            // Email field
+            // Email field with validation
             const Text(
               "EMAIL",
               style: TextStyle(fontSize: 16),
             ),
-
             const SizedBox(height: 5),
-
             TextFormField(
               controller: emailController,
               focusNode: emailFocus,
@@ -205,48 +248,75 @@ class _RegisterPageState extends State<RegisterPage> {
 
             const SizedBox(height: 20),
 
-            // Password field with validation
-            const Text(
-              "PASSWORD",
-              style: TextStyle(fontSize: 16),
-            ),
-
-            const SizedBox(height: 5),
-
-            TextFormField(
-              controller: passwordController,
-              focusNode: passwordFocus,
-              textInputAction: TextInputAction.done,
-              onFieldSubmitted: (_) {
-                if (!_isLoading) {
-                  FocusScope.of(context).unfocus();
-                }
-              },
-              obscureText: !isPasswordVisible,
-              decoration: InputDecoration(
-                labelText: "**********",
-                prefixIcon: const Icon(Icons.lock),
-                border: const OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                  ),
-                  onPressed: () {
+            // Password field with real-time validation
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "PASSWORD",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 5),
+                TextFormField(
+                  controller: passwordController,
+                  focusNode: passwordFocus,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (_) {
+                    if (!_isLoading) {
+                      FocusScope.of(context).unfocus();
+                    }
+                  },
+                  // Real-time password validation
+                  onChanged: (value) {
                     setState(() {
-                      isPasswordVisible = !isPasswordVisible;
+                      hasMinLength = value.length >= 8;
+                      hasUppercase = value.contains(RegExp(r'[A-Z]'));
+                      hasSpecialChar = value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
                     });
                   },
+                  obscureText: !isPasswordVisible,
+                  decoration: InputDecoration(
+                    labelText: "**********",
+                    prefixIcon: const Icon(Icons.lock),
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isPasswordVisible = !isPasswordVisible;
+                        });
+                      },
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a password';
+                    }
+                    if (!hasMinLength || !hasUppercase || !hasSpecialChar) {
+                      return 'Please meet all password requirements';
+                    }
+                    return null;
+                  },
                 ),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a password';
-                }
-                if (value.length < 6) {
-                  return 'Password must be at least 6 characters';
-                }
-                return null;
-              },
+                // Password requirements indicators
+                const SizedBox(height: 10),
+                PasswordRequirement(
+                  isMet: hasMinLength,
+                  text: 'At least 8 characters',
+                ),
+                const SizedBox(height: 4),
+                PasswordRequirement(
+                  isMet: hasUppercase,
+                  text: 'At least one capital letter',
+                ),
+                const SizedBox(height: 4),
+                PasswordRequirement(
+                  isMet: hasSpecialChar,
+                  text: 'At least one special character',
+                ),
+              ],
             ),
 
             const SizedBox(height: 30),
@@ -314,6 +384,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void dispose() {
+    // Clean up controllers and focus nodes
     nameFocus.dispose();
     nameController.dispose();
     emailFocus.dispose();

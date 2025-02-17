@@ -70,17 +70,17 @@ class AuthService {
   Future<User?> signInWithGoogle() async {
     try {
       // Configure Google Sign In with specific options
-      final GoogleSignIn _googleSignIn = GoogleSignIn(
+      final GoogleSignIn googleSignIn = GoogleSignIn(
         signInOption: SignInOption.standard, // Forces account picker dialog
         scopes: ['email'], // Request email scope only
         forceCodeForRefreshToken: true, // Ensure fresh authentication
       );
 
       // Sign out of any existing Google session to force account picker
-      await _googleSignIn.signOut();
+      await googleSignIn.signOut();
 
       // Trigger the Google Sign In flow
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if (googleUser == null) return null; // User cancelled the sign-in flow
 
       // Get authentication details from Google Sign In

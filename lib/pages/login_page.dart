@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:wardobe_app/pages/password_reset.dart';
@@ -45,6 +47,8 @@ class _LoginPageState extends State<LoginPage> {
       _isLoading = true;
     });
 
+    final context = this.context;
+
     try {
       User? user = await _authService.signIn(
         emailController.text,
@@ -54,73 +58,13 @@ class _LoginPageState extends State<LoginPage> {
       await FirebaseAuth.instance.currentUser?.reload();
 
       if (user != null && !user.emailVerified) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-              builder: (context) => const EmailVerificationPage()),
-        );
-        return;
-      }
-
-      if (user != null) {
-        logger.i("Successful login for : ${user.email}");
-        Fluttertoast.showToast(
-          msg: "Sing In Successful for ${user.displayName}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-        );
-
-        // Delay navigation to the Home page.
-        await Future.delayed(const Duration(seconds: 1), () {
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const UserHome()),
-            (Route<dynamic> route) => false,
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const EmailVerificationPage(),
+            ),
           );
-        });
-      } else {
-        Fluttertoast.showToast(
-          msg: "Incorrect email or password. Try again...",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );
-
-        logger.e("Sign In failed");
-      }
-    } catch (e) {
-      Fluttertoast.showToast(
-        msg: e.toString(),
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
-
-      logger.e("Sign In failed:", error: e);
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  void _loginWithGoogle() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      User? user = await _authService.signInWithGoogle();
-
-      await FirebaseAuth.instance.currentUser?.reload();
-
-      if (user != null && !user.emailVerified) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-              builder: (context) => const EmailVerificationPage()),
-        );
+        }
         return;
       }
 
@@ -136,10 +80,12 @@ class _LoginPageState extends State<LoginPage> {
 
         // Delay navigation to the Home page.
         await Future.delayed(const Duration(seconds: 1), () {
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const UserHome()),
-            (Route<dynamic> route) => false,
-          );
+          if (mounted) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const UserHome()),
+              (Route<dynamic> route) => false,
+            );
+          }
         });
       } else {
         Fluttertoast.showToast(
@@ -163,9 +109,83 @@ class _LoginPageState extends State<LoginPage> {
 
       logger.e("Sign In failed:", error: e);
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  void _loginWithGoogle() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    final context = this.context;
+
+    try {
+      User? user = await _authService.signInWithGoogle();
+
+      await FirebaseAuth.instance.currentUser?.reload();
+
+      if (user != null && !user.emailVerified) {
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const EmailVerificationPage(),
+            ),
+          );
+        }
+        return;
+      }
+
+      if (user != null) {
+        logger.i("Successful login for : ${user.email}");
+        Fluttertoast.showToast(
+          msg: "Sign In Successful for ${user.displayName}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+        );
+
+        // Delay navigation to the Home page.
+        await Future.delayed(const Duration(seconds: 1), () {
+          if (mounted) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const UserHome()),
+              (Route<dynamic> route) => false,
+            );
+          }
+        });
+      } else {
+        Fluttertoast.showToast(
+          msg: "Incorrect email or password. Try again...",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+        );
+
+        logger.e("Sign In failed");
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+
+      logger.e("Sign In failed:", error: e);
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 

@@ -19,7 +19,7 @@ class AuthService {
   /// @param name - The display name for the new user
   /// @param email - The email address for registration
   /// @param password - The user's chosen password
-  /// @returns Future<User?> - The created user object, or null if registration fails
+  /// @returns Future`<`User?`>` - The created user object, or null if registration fails
   Future<User?> register(String name, String email, String password) async {
     try {
       // Create new user account with email and password
@@ -48,7 +48,7 @@ class AuthService {
   /// Signs in an existing user with email and password
   /// @param email - The user's email address
   /// @param password - The user's password
-  /// @returns Future<User?> - The signed-in user object, or null if sign-in fails
+  /// @returns Future`<`User?`>` - The signed-in user object, or null if sign-in fails
   Future<User?> signIn(String email, String password) async {
     try {
       // Attempt to sign in with provided credentials
@@ -66,7 +66,7 @@ class AuthService {
 
   /// Handles Google Sign In authentication process
   /// Shows account picker every time and manages OAuth flow
-  /// @returns Future<User?> - The signed-in user object, or null if sign-in fails/cancelled
+  /// @returns Future`<`User?`>` - The signed-in user object, or null if sign-in fails/cancelled
   Future<User?> signInWithGoogle() async {
     try {
       // Configure Google Sign In with specific options
@@ -104,7 +104,7 @@ class AuthService {
   }
 
   /// Signs out the current user from both Firebase and Google
-  /// @returns Future<void>
+  /// @returns Future`<`void`>`
   Future<void> signOut() async {
     // Sign out from Firebase
     await _auth.signOut();

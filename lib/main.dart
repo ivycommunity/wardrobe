@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wardobe_app/pages/user_home.dart';
 import 'pages/home_page.dart';
 import 'pages/login_page.dart'; // Ensure you have a login page
 import 'package:firebase_core/firebase_core.dart';
@@ -68,7 +69,7 @@ class AuthCheck extends StatelessWidget {
         // User is logged in
         if (snapshot.hasData) {
           logger.d("User is logged in: ${snapshot.data?.email}");
-          return const HomePage();
+          return const UserHome();
         }
 
         // No user logged in

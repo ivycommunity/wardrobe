@@ -342,6 +342,7 @@ class _BodyMeasurementScreenState extends State<BodyMeasurementScreen> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
+                // ignore: deprecated_member_use
                 color: Colors.blue.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),

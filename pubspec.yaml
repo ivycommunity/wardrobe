@@ -41,6 +41,9 @@ dependencies:
   google_sign_in: ^6.2.1
   github: 9.24.0
   flutter_signin_button: ^2.0.0
+  google_mlkit_pose_detection: ^0.10.0
+  camera: ^0.10.5
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:wardobe_app/pages/measurements.dart';
 import 'package:wardobe_app/pages/login_page.dart';
 
 class UserHome extends StatefulWidget {
@@ -85,6 +86,15 @@ class _UserHomePageState extends State<UserHome> {
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF1A2B3C),
                 ),
+              ),
+              OutlinedButton(
+                onPressed: () async {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => BodyMeasurementScreen()),
+                  );
+                },
+                child: const Text('Get measurements'),
               ),
             ],
           ),

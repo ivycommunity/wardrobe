@@ -53,7 +53,7 @@ class _UserHomePageState extends State<UserHome> {
     return Scaffold(
       backgroundColor: const Color(0xFFFFE4E1),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 80, 93, 105),
+        backgroundColor: Color(0xFF1A2B3C),
         title: const Text(
           'Home',
           style: TextStyle(color: Colors.white),

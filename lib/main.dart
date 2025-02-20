@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
+import 'pages/login_page.dart'; // Ensure you have a login page
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wardobe_app/utils/logger.dart';
-
-void checkUser() {
-  logger.d("Logger inititialization");
-  FirebaseAuth auth = FirebaseAuth.instance;
-  if (auth.currentUser != null) {
-    logger.d("User is logged in ${auth.currentUser!.email}");
-  } else {
-    logger.d("No user logged in");
-  }
-}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,12 +41,40 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Wardrobe App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      // Check user authentication and show the appropriate screen
+      home: const AuthCheck(),
+    );
+  }
+}
+
+class AuthCheck extends StatelessWidget {
+  const AuthCheck({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        // Waiting for Firebase to load
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        // User is logged in
+        if (snapshot.hasData) {
+          logger.d("User is logged in: ${snapshot.data?.email}");
+          return const HomePage();
+        }
+
+        // No user logged in
+        logger.d("No user logged in");
+        return const LoginPage(); // Redirect to login page
+      },
     );
   }
 }

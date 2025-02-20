@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:math';
 
+// BodyMeasurementScreen is a stateful widget that allows users to take or select
+// a photo and then process it to detect body measurements using pose detection.
 class BodyMeasurementScreen extends StatefulWidget {
   const BodyMeasurementScreen({super.key});
 
@@ -20,6 +22,8 @@ class _BodyMeasurementScreenState extends State<BodyMeasurementScreen> {
   bool _processing = false;
   bool _showGuide = true;
 
+  /// Picks an image from the specified source (camera or gallery) and processes it.
+  /// @param source - The source from which to pick the image (camera or gallery).
   Future<void> _getImageFromSource(ImageSource source) async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: source);
@@ -36,16 +40,17 @@ class _BodyMeasurementScreenState extends State<BodyMeasurementScreen> {
     }
   }
 
-  // Functions to handle specific image sources
+  // Picks an image from the camera and processes it.
   Future<void> _getImageFromCamera() async {
     await _getImageFromSource(ImageSource.camera);
   }
 
+  // Picks an image from the gallery and processes it.
   Future<void> _getImageFromGallery() async {
     await _getImageFromSource(ImageSource.gallery);
   }
 
-  // Show a modal bottom sheet with image source options
+  // Shows a modal bottom sheet with options to pick an image from the camera or gallery.
   void _showImageSourceOptions() {
     showModalBottomSheet(
       context: context,
@@ -77,11 +82,17 @@ class _BodyMeasurementScreenState extends State<BodyMeasurementScreen> {
     );
   }
 
+  // Calculates the distance between two pose landmarks.
+  // @param first - The first pose landmark.
+  // @param second - The second pose landmark.
+  // @returns The distance between the two landmarks.
   double _getDistance(PoseLandmark first, PoseLandmark second) {
     return sqrt(pow(first.x - second.x, 2) + pow(first.y - second.y, 2));
   }
 
-  // Check if all required landmarks for a full body measurement are detected
+  // Checks if all required landmarks for a full body measurement are detected.
+  // @param pose - The detected pose.
+  // @returns A boolean indicating whether the full body is detected.
   Future<bool> _isFullBodyDetected(Pose pose) async {
     // Essential landmarks for full body measurements
     final requiredLandmarks = [
@@ -118,6 +129,7 @@ class _BodyMeasurementScreenState extends State<BodyMeasurementScreen> {
     return verticalDistance > 0.6;
   }
 
+  // Processes the selected image to detect the pose and calculate measurements.
   Future<void> _processPose() async {
     if (_imageFile == null) return;
 
@@ -196,7 +208,7 @@ class _BodyMeasurementScreenState extends State<BodyMeasurementScreen> {
     });
   }
 
-  // Show guide with proper posture example
+  // Builds the guide widget that shows proper posture examples for accurate measurements.
   Widget _buildPostureGuide() {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 16),
@@ -272,6 +284,11 @@ class _BodyMeasurementScreenState extends State<BodyMeasurementScreen> {
     );
   }
 
+  // Builds a single step in the posture guide.
+  // @param number - The step number.
+  // @param title - The title of the step.
+  // @param subtitle - The subtitle of the step.
+  // @returns A widget representing a single guide step.
   Widget _buildGuideStep(String number, String title, String subtitle) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
@@ -411,7 +428,7 @@ class _BodyMeasurementScreenState extends State<BodyMeasurementScreen> {
   }
 }
 
-// Custom painter to draw the pose illustration
+/// Custom painter to draw the pose illustration.
 class PoseIllustrationPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

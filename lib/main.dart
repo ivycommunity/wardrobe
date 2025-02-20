@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wardobe_app/pages/user_home.dart';
-import 'pages/home_page.dart';
-import 'pages/login_page.dart'; // Ensure you have a login page
+import 'pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:fluttertoast/fluttertoast.dart';

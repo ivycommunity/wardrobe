@@ -2,7 +2,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wardobe_app/pages/login_page.dart';
+import 'package:wardobe_app/pages/auth/login_page.dart';
 
 /// EmailVerificationPage handles the email verification process for newly registered users
 /// Displays verification status and allows users to request verification emails

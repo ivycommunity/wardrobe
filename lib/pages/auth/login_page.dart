@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:wardobe_app/pages/password_reset.dart';
+import 'package:wardobe_app/pages/auth/password_reset.dart';
 import 'package:wardobe_app/pages/user_home.dart';
 import 'package:wardobe_app/services/auth_service.dart';
 import 'package:wardobe_app/utils/logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:wardobe_app/pages/email_verification.dart';
+import 'package:wardobe_app/pages/auth/email_verification.dart';
 
 import 'register_page.dart';
 
